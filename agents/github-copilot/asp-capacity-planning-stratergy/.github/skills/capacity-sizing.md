@@ -20,7 +20,7 @@ Recommend an ASP sizing and scaling model for the platform. Your recommendations
 
 ## Output
 
-- Produce the output as a Markdown file saved to `docs/capacity-strategy/02-asp-sizing-and-scaling.md`.
+- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/02-recommendations/02-asp-sizing-and-scaling.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a summary recommendation table with columns: ASP Segment, SKU, Min Instances, Max Instances, Scale Metric, Threshold.
 - Where data is missing, present options with trade-offs rather than a single recommendation.

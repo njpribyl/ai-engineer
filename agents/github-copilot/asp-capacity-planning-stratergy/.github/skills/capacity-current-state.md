@@ -19,7 +19,7 @@ Perform a current state assessment of the platform's capacity position. Your ass
 
 ## Output
 
-- Produce the output as a Markdown file saved to `docs/capacity-strategy/01-current-state-assessment.md`.
+- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/01-assessments/01-current-state-assessment.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies (platform-context.md).
 - Use clear headings, tables where appropriate, and a traffic-light (Red/Amber/Green) risk summary.
 - Do not fabricate data. If information is missing, flag it and state what assumption would need to be validated.

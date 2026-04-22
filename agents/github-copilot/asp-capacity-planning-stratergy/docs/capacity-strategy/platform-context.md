@@ -1,15 +1,15 @@
 # Platform Context — Capacity Strategy
 
-> **Instructions:** Fill in the values below before running the capacity strategy agent.
-> This file is referenced by all skills as the shared input. Keep it up to date as the platform evolves.
+> **Example:** This is a sample completed context file showing realistic values.
+> Replace values with your environment data before using for formal planning.
 
 ---
 
 ## Platform Overview
 
-- **Platform Name:** [e.g., NHS Connect iPaaS / Mars HIP]
-- **Platform Purpose:** [Brief description of what the platform does]
-- **Cloud Region(s):** [e.g., UK South, UK West]
+- **Platform Name:** Contoso Health Integration Platform (CHIP)
+- **Platform Purpose:** Azure-native integration platform for clinical and operational messaging between EMR, LIMS, pharmacy, scheduling, and analytics systems.
+- **Cloud Region(s):** UK South (primary), UK West (DR)
 
 ---
 
@@ -21,8 +21,8 @@
 | -------------------------------------- | ------------------------------ |
 | App Service Environment version        | ASEv3                          |
 | Number of ASPs                         | 3                              |
-| Number of Logic App Standard resources | [e.g., 15]                    |
-| Total live interfaces                  | [e.g., 120]                   |
+| Number of Logic App Standard resources | 200                             |
+| Total live interfaces                  | 164                            |
 
 ### App Service Plans
 
@@ -30,9 +30,9 @@
 
 | ASP Name | SKU | Min Instances | Max Instances | Autoscale Enabled | Purpose / Workload Description |
 | -------- | --- | ------------- | ------------- | ----------------- | ------------------------------ |
-| [e.g., asp-integration-01] | I1v2 | [e.g., 3] | [e.g., 10] | [Yes / No] | [e.g., High-throughput message interfaces] |
-| [e.g., asp-integration-02] | I1v2 | [e.g., 2] | [e.g., 8]  | [Yes / No] | [e.g., Batch / scheduled interfaces] |
-| [e.g., asp-integration-03] | I2v2 | [e.g., 3] | [e.g., 6]  | [Yes / No] | [e.g., Complex orchestration / heavy transforms] |
+| asp-chip-realtime-01 | I2v2 | 4 | 14 | Yes | Real-time ADT/ORM/ORU message processing and API-triggered workflows |
+| asp-chip-batch-01 | I1v2 | 2 | 8  | Yes | Scheduled extracts, bulk synchronization, and reconciliation jobs |
+| asp-chip-orchestration-01 | I3v2 | 3 | 9  | Yes | Multi-step orchestration, document transforms, and partner routing |
 
 ### Autoscale Rules
 
@@ -40,12 +40,12 @@
 
 | ASP Name | Rule # | Metric | Operator | Threshold | Direction | Instance Change | Cooldown (mins) |
 | -------- | ------ | ------ | -------- | --------- | --------- | --------------- | --------------- |
-| [asp-integration-01] | 1 | CPU % | > | [e.g., 70] | Scale Out | [e.g., +1] | [e.g., 5] |
-| [asp-integration-01] | 2 | CPU % | < | [e.g., 30] | Scale In  | [e.g., -1] | [e.g., 10] |
-| [asp-integration-02] | 1 | CPU % | > | [e.g., 75] | Scale Out | [e.g., +2] | [e.g., 5] |
-| [asp-integration-02] | 2 | CPU % | < | [e.g., 40] | Scale In  | [e.g., -1] | [e.g., 10] |
-| [asp-integration-03] | 1 | [e.g., Memory %] | > | [e.g., 65] | Scale Out | [e.g., +1] | [e.g., 5] |
-| [asp-integration-03] | 2 | [e.g., Memory %] | < | [e.g., 35] | Scale In  | [e.g., -1] | [e.g., 10] |
+| asp-chip-realtime-01 | 1 | CPU % | > | 68 | Scale Out | +2 | 5 |
+| asp-chip-realtime-01 | 2 | CPU % | < | 32 | Scale In  | -1 | 10 |
+| asp-chip-batch-01 | 1 | CPU % | > | 72 | Scale Out | +1 | 5 |
+| asp-chip-batch-01 | 2 | CPU % | < | 35 | Scale In  | -1 | 15 |
+| asp-chip-orchestration-01 | 1 | Memory % | > | 70 | Scale Out | +1 | 5 |
+| asp-chip-orchestration-01 | 2 | Memory % | < | 40 | Scale In  | -1 | 15 |
 
 ### Logic App Distribution
 
@@ -53,9 +53,10 @@
 
 | ASP Name | Logic App Resources Hosted | Total Workflows | Total Interfaces | Notes |
 | -------- | -------------------------- | --------------- | ---------------- | ----- |
-| [asp-integration-01] | [e.g., 5] | [e.g., 40] | [e.g., 40] | |
-| [asp-integration-02] | [e.g., 6] | [e.g., 50] | [e.g., 50] | |
-| [asp-integration-03] | [e.g., 4] | [e.g., 30] | [e.g., 30] | |
+| asp-chip-realtime-01      |  90 | 92 | 88 | Highest transactional load; receives most API-triggered traffic. ~1 workflow per resource to maximise isolation for real-time messaging |
+| asp-chip-batch-01         |  55 | 54 | 50 | Nightly ETL and periodic sync flows; each batch interface deployed as its own Logic App resource |
+| asp-chip-orchestration-01 |  55 | 46 | 26 | Fewer interfaces but multiple supporting Logic App resources per orchestration (parent + child workflows); heavier per-workflow compute footprint |
+| **Total**                 | **200** | **192** | **164** | Matches 200 Logic App Standard resources declared in Environment table |
 
 ---
 
@@ -65,40 +66,38 @@
 
 | ASP Name | Avg CPU % | Peak CPU % | Avg Memory % | Peak Memory % | Scale-Out Frequency | Notes |
 | -------- | --------- | ---------- | ------------ | ------------- | ------------------- | ----- |
-| [asp-integration-01] | [e.g., 55] | [e.g., 85] | [e.g., 40] | [e.g., 65] | [e.g., multiple times daily] | |
-| [asp-integration-02] | [e.g., 35] | [e.g., 60] | [e.g., 30] | [e.g., 50] | [e.g., weekly] | |
-| [asp-integration-03] | [e.g., 70] | [e.g., 92] | [e.g., 55] | [e.g., 75] | [e.g., daily] | [e.g., heavy transforms causing CPU spikes] |
+| asp-chip-realtime-01 | 57 | 86 | 49 | 71 | 3-5 times daily | Peaks align with outpatient check-in windows |
+| asp-chip-batch-01 | 34 | 63 | 37 | 55 | 2-3 times weekly | Most load concentrated between 01:00-04:00 UTC |
+| asp-chip-orchestration-01 | 66 | 93 | 61 | 82 | Daily | XSLT and PDF transform stages drive sustained memory pressure |
 
 ### Known Performance Issues
 
 | Issue | Affected ASP(s) | Impact | Notes |
 | ----- | ---------------- | ------ | ----- |
-| [e.g., Frequent scale-out hitting max instances] | [asp-integration-01] | [e.g., Latency spikes during peak] | |
-| [describe or N/A] | | | |
+| Scale-out reaches max instances during Monday morning surge | asp-chip-realtime-01 | Elevated end-to-end latency (p95 +28%) for 30-45 minutes | Usually occurs 08:00-09:30 local time |
+| Orchestration workflows occasionally queue behind large transform jobs | asp-chip-orchestration-01 | Delayed downstream notifications and SLA risk for non-urgent feeds | Investigating workload isolation by interface class |
 
 ---
 
 ## Planned Growth
-
 | Data Point                         | Value                          |
 | ---------------------------------- | ------------------------------ |
-| Interfaces to onboard              | [e.g., 1800]                  |
-| Source platform being replaced     | [e.g., MuleSoft]              |
-| Migration timeline                 | [e.g., 12-24 months]          |
-| Expected onboarding rate           | [e.g., 50-100 per month]      |
-| Interface complexity mix           | [e.g., 60% light, 30% medium, 10% heavy] |
+| Interfaces to onboard              | 1800                            |
+| Source platform being replaced     | Legacy Mirth Connect + Mule 4 hybrid estate |
+| Migration timeline                 | 18 months                      |
+| Expected onboarding rate           | 30-45 per month                |
+| Interface complexity mix           | 58% light, 32% medium, 10% heavy |
 
 ---
 
 ## Constraints
-
 | Constraint                         | Detail                         |
 | ---------------------------------- | ------------------------------ |
-| Budget sensitivity                 | [High / Medium / Low / Unknown] |
-| Environments in scope              | [e.g., Prod, Pre-Prod, DR]   |
-| Regulatory requirements            | [e.g., NHS DSPT, data residency] |
-| Change control lead time           | [e.g., 2 weeks CAB approval]  |
-| Monitoring tooling in place        | [e.g., Azure Monitor, App Insights, Log Analytics] |
-| ASE tenancy model                  | [Single-tenant / Shared]       |
-| Known platform limits being hit    | [describe or N/A]             |
-| Reserved instances in use          | [Yes / No / Partial]          |
+| Budget sensitivity                 | High                           |
+| Environments in scope              | Production, Pre-Production, DR |
+| Regulatory requirements            | UK data residency, DSPT-aligned controls, ISO 27001 |
+| Change control lead time           | 10 business days (CAB + security review) |
+| Monitoring tooling in place        | Azure Monitor, Application Insights, Log Analytics, Action Groups |
+| ASE tenancy model                  | Single-tenant                  |
+| Known platform limits being hit    | SNAT port pressure on two outbound-heavy workflows during peak windows |
+| Reserved instances in use          | Partial (1-year reservations on I2v2 only) |

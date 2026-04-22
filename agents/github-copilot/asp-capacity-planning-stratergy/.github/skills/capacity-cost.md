@@ -23,7 +23,7 @@ Provide cost optimisation recommendations that balance capacity headroom against
 
 ## Output
 
-- Produce the output as a Markdown file saved to `docs/capacity-strategy/06-cost-optimisation.md`.
+- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/02-recommendations/06-cost-optimisation.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a cost projection table with columns: Phase, ASP Count, SKU, Instances, Estimated Monthly Cost.
 - Where exact pricing is unavailable, provide the formula and link to the Azure pricing calculator.

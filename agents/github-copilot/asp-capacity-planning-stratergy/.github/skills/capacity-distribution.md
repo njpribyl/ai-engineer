@@ -26,7 +26,7 @@ Define how interfaces should be distributed across ASPs and Logic App Standard r
 
 ## Output
 
-- Produce the output as a Markdown file saved to `docs/capacity-strategy/04-workload-distribution.md`.
+- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/04-distribution/04-workload-distribution.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a distribution model diagram or table.
 - Include a worked example showing how a batch of new interfaces would be assigned.

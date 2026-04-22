@@ -26,7 +26,7 @@ Define the monitoring and governance framework needed to proactively manage capa
 
 ## Output
 
-- Produce the output as a Markdown file saved to `docs/capacity-strategy/05-monitoring-and-governance.md`.
+- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/05-governance/05-monitoring-and-governance.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a metrics reference table with columns: Metric, Layer, Source, Warning Threshold, Critical Threshold, Action.
 - Include example KQL queries where applicable.

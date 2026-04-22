@@ -22,7 +22,7 @@ Define a growth plan for introducing new ASPs as interfaces are onboarded. The p
 
 ## Output
 
-- Produce the output as a Markdown file saved to `docs/capacity-strategy/03-asp-growth-plan.md`.
+- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/03-plans/03-asp-growth-plan.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a phased capacity projection table.
 - Include a decision tree in text or Mermaid diagram format.

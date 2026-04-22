@@ -20,7 +20,7 @@ Compile all individual strategy documents into a single, cohesive capacity manag
 
 ## Output
 
-- Produce the output as a Markdown file saved to `docs/capacity-strategy/capacity-management-strategy.md`.
+- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/07-compiled/capacity-management-strategy.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - The document should be suitable for review by technical and non-technical stakeholders.
 - Include a table of contents at the top.

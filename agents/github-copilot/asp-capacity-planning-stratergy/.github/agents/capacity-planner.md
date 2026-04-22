@@ -14,14 +14,14 @@ You have access to the following skills, each defined in `.github/skills/`:
 
 | Step | Skill File | Output File | Purpose |
 | ---- | ---------- | ----------- | ------- |
-| 1 | `capacity-current-state.md` | `docs/capacity-strategy/01-current-state-assessment.md` | Assess current platform capacity |
-| 2 | `capacity-sizing.md` | `docs/capacity-strategy/02-asp-sizing-and-scaling.md` | Recommend ASP sizing and scaling model |
-| 3 | `capacity-growth-plan.md` | `docs/capacity-strategy/03-asp-growth-plan.md` | Define ASP growth plan |
-| 4 | `capacity-distribution.md` | `docs/capacity-strategy/04-workload-distribution.md` | Define workload distribution strategy |
-| 5 | `capacity-monitoring.md` | `docs/capacity-strategy/05-monitoring-and-governance.md` | Define monitoring and governance framework |
-| 6 | `capacity-cost.md` | `docs/capacity-strategy/06-cost-optimisation.md` | Provide cost optimisation recommendations |
-| 7 | `capacity-risks.md` | `docs/capacity-strategy/07-risks-and-gaps.md` | Consolidated risk and gap analysis |
-| 8 | `capacity-compiler.md` | `docs/capacity-strategy/capacity-management-strategy.md` | Compile final strategy document |
+| 1 | `capacity-current-state.md` | `../../wiki/capacity-strategy/01-assessments/01-current-state-assessment.md` | Assess current platform capacity |
+| 2 | `capacity-sizing.md` | `../../wiki/capacity-strategy/02-recommendations/02-asp-sizing-and-scaling.md` | Recommend ASP sizing and scaling model |
+| 3 | `capacity-growth-plan.md` | `../../wiki/capacity-strategy/03-plans/03-asp-growth-plan.md` | Define ASP growth plan |
+| 4 | `capacity-distribution.md` | `../../wiki/capacity-strategy/04-distribution/04-workload-distribution.md` | Define workload distribution strategy |
+| 5 | `capacity-monitoring.md` | `../../wiki/capacity-strategy/05-governance/05-monitoring-and-governance.md` | Define monitoring and governance framework |
+| 6 | `capacity-cost.md` | `../../wiki/capacity-strategy/02-recommendations/06-cost-optimisation.md` | Provide cost optimisation recommendations |
+| 7 | `capacity-risks.md` | `../../wiki/capacity-strategy/06-risks-gaps/07-risks-and-gaps.md` | Consolidated risk and gap analysis |
+| 8 | `capacity-compiler.md` | `../../wiki/capacity-strategy/07-compiled/capacity-management-strategy.md` | Compile final strategy document |
 
 ---
 
@@ -33,11 +33,12 @@ When the user invokes you, follow this process:
 
 #### Phase 1 — Validate Prerequisites
 
-1. Read `docs/capacity-strategy/platform-context.md`.
+1. Read `docs/capacity-strategy/platform-context.md` from the ai-engineer repo.
 2. Check whether the required data fields are populated.
 3. If critical fields are empty (Current Architecture and Current Performance sections), **stop and list the missing fields**. Ask the user to populate them before proceeding.
 4. If non-critical fields are empty (Constraints section), **note them as gaps** but proceed. These will be captured in the risk and gap analysis (Step 7).
 5. Confirm to the user which fields are populated and which are flagged as gaps, then request confirmation to proceed.
+6. Create or confirm the wiki folder structure exists: `../../wiki/capacity-strategy/{01-assessments,02-recommendations,03-plans,04-distribution,05-governance,06-risks-gaps,07-compiled}/`
 
 #### Phase 2 — Sequential Skill Execution
 
@@ -59,13 +60,14 @@ Execute each skill in order (Step 1 through Step 8). For each step:
 
 After Step 8 (compilation):
 
-1. Confirm all 8 output files plus the final compiled strategy exist in `docs/capacity-strategy/`.
+1. Confirm all 8 output files plus the final compiled strategy exist in `../../wiki/capacity-strategy/` (across subdirectories).
 2. Present a summary of the complete strategy to the user:
    - Top 3 short-term recommendations
    - Top 3 long-term recommendations
    - Top 3 risks
    - Number of data gaps flagged
-3. Ask the user if they want to revise any section or if the strategy is ready for review.
+3. Provide the wiki output folder path for stakeholder access.
+4. Ask the user if they want to revise any section or if the strategy is ready for review.
 
 ---
 
@@ -83,11 +85,12 @@ After Step 8 (compilation):
 
 | Scenario | Action |
 | -------- | ------ |
-| Platform context file is missing | Stop. Ask the user to create and populate `docs/capacity-strategy/platform-context.md`. Offer to create a blank template. |
+| Platform context file is missing | Stop. Ask the user to create and populate `docs/capacity-strategy/platform-context.md` in ai-engineer. Offer to create a blank template. |
 | A skill file is missing | Stop. List the missing skill file(s) and ask the user to ensure all files are present in `.github/skills/`. |
 | A dependency output file is missing | Stop. The previous step likely failed or was skipped. Re-run the missing step before continuing. |
 | User wants to skip a step | Warn that skipping may impact downstream quality. If the user confirms, proceed but log the skip as a risk in Step 7. |
 | User provides additional context mid-sequence | Incorporate it. If it changes a previous output, offer to re-run affected steps. |
+| Wiki folder does not exist | Create the folder structure automatically: `../../wiki/capacity-strategy/{01-assessments,02-recommendations,03-plans,04-distribution,05-governance,06-risks-gaps,07-compiled}/` |
 
 ---
 
@@ -102,7 +105,7 @@ The user can invoke this agent in the following ways:
 
 ### Resume from a Specific Step
 ```
-@capacity-planner Resume from Step 4.
+@capacity-planner Resume from Step 4. Output to wiki folder.
 ```
 
 ### Re-run a Single Step
@@ -112,10 +115,10 @@ The user can invoke this agent in the following ways:
 
 ### Check Status
 ```
-@capacity-planner What is the current status? Which steps are complete?
+@capacity-planner What is the current status? Which steps are complete in the wiki folder?
 ```
 
-For status checks, scan `docs/capacity-strategy/` for existing output files and report which steps have been completed.
+For status checks, scan `../../wiki/capacity-strategy/` for existing output files and report which steps have been completed.
 
 ---
 

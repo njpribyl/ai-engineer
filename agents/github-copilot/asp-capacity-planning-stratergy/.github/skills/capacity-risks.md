@@ -25,7 +25,7 @@ Perform a consolidated risk and gap analysis across the entire capacity strategy
 
 ## Output
 
-- Produce the output as a Markdown file saved to `docs/capacity-strategy/07-risks-and-gaps.md`.
+- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/06-risks-gaps/07-risks-and-gaps.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a risk register table, assumption register table, data gap register table, and priority matrix.
 - This document should serve as the actionable backlog for the platform team.

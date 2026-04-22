@@ -13,7 +13,7 @@ You are a senior Azure Solution Architect specialising in Azure Integration Serv
 
 Perform a consolidated risk and gap analysis across the entire capacity strategy. This must cover:
 
-1. **Data gaps** — Consolidate all data gaps flagged across the previous skills into a single register. For each gap, state: what is missing, why it matters, impact on the strategy if not resolved, and recommended action to close the gap.
+1. **Data gaps** — Consolidate all data gaps flagged across the previous skills into a single register. For each gap, state: what is missing, why it matters, impact on the strategy if not resolved, and **recommended action with KQL query** to close the gap. Use the data collection queries defined in `capacity-current-state.md` as templates.
 2. **Assumption register** — List all assumptions made across the strategy documents. For each assumption, state: the assumption, where it was made, the risk if the assumption is wrong, and how to validate it.
 3. **Risk register** — Identify all capacity-related risks, including:
    - Platform stability risks (e.g., scaling limits, noisy neighbours)

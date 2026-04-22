@@ -24,6 +24,59 @@ Perform a current state assessment of the platform's capacity position. Your ass
 - Use clear headings, tables where appropriate, and a traffic-light (Red/Amber/Green) risk summary.
 - Do not fabricate data. If information is missing, flag it and state what assumption would need to be validated.
 
+## Data Collection Query
+
+If per-workflow telemetry is not available in the platform context, use this KQL query against Application Insights to populate gaps G1 and G2 (per-workflow execution counts, duration, and arrival rates over the last 30 days):
+
+```kusto
+let BaseRuns =
+    AppTraces
+    | where TimeGenerated >= startofday(ago(30d))
+    | where tostring(Properties.EventName) == "WorkflowRunEnd"
+    | extend ParsedProps = parse_json(tostring(Properties.prop__properties))
+    | extend Workflow = tostring(ParsedProps.resource.workflowName)
+    | extend LogicApp = tostring(AppRoleName)
+    | extend DurationMs = todouble(Properties.prop__durationInMilliseconds)
+    | where isnotempty(Workflow);
+let Performance =
+    BaseRuns
+    | summarize
+        TotalRuns = count(),
+        MinSec = round(min(DurationMs) / 1000.0, 2),
+        AvgSec = round(avg(DurationMs) / 1000.0, 2),
+        P50Sec = round(percentile(DurationMs, 50) / 1000.0, 2),
+        P95Sec = round(percentile(DurationMs, 95) / 1000.0, 2),
+        P99Sec = round(percentile(DurationMs, 99) / 1000.0, 2),
+        MaxSec = round(max(DurationMs) / 1000.0, 2)
+      by LogicApp, Workflow;
+let ArrivalRates =
+    BaseRuns
+    | summarize RunsPer5Min = count() by LogicApp, Workflow, TimeBin = bin(TimeGenerated, 5m)
+    | summarize
+        AvgRunsPer5Min = round(avg(RunsPer5Min), 2),
+        P95RunsPer5Min = round(percentile(RunsPer5Min, 95), 2),
+        PeakRunsPer5Min = max(RunsPer5Min)
+      by LogicApp, Workflow;
+Performance
+| join kind=leftouter ArrivalRates on LogicApp, Workflow
+| project
+    LogicApp,
+    Workflow,
+    TotalRuns,
+    AvgRunsPer5Min,
+    P95RunsPer5Min,
+    PeakRunsPer5Min,
+    AvgSec,
+    P50Sec,
+    P95Sec,
+    P99Sec,
+    MinSec,
+    MaxSec
+| order by TotalRuns desc
+```
+
+Export results to CSV and use to calibrate ASP sizing and workload isolation decisions in Steps 2 and 4.
+
 ## Dependencies
 
 - `docs/capacity-strategy/platform-context.md`

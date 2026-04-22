@@ -6,7 +6,7 @@ You are a senior Azure Solution Architect specialising in Azure Integration Serv
 
 ## Context
 
-Read the platform context from `docs/capacity-strategy/platform-context.md` for all current architecture, performance, and constraint data.
+Read the platform context from `../../../../../wiki/capacity-strategy/context/platform-context.md` for all current architecture, performance, and constraint data.
 
 ## Task
 
@@ -19,7 +19,7 @@ Perform a current state assessment of the platform's capacity position. Your ass
 
 ## Output
 
-- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/01-assessments/01-current-state-assessment.md`.
+- Produce the output as a Markdown file saved to `../../../../../wiki/capacity-strategy/01-assessments/01-current-state-assessment.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies (platform-context.md).
 - Use clear headings, tables where appropriate, and a traffic-light (Red/Amber/Green) risk summary.
 - Do not fabricate data. If information is missing, flag it and state what assumption would need to be validated.
@@ -77,6 +77,8 @@ Performance
 
 Export results to CSV and use to calibrate ASP sizing and workload isolation decisions in Steps 2 and 4.
 
+**Reference Example:** See `../example-docs/capacity-strategy/workflow-telemetry-baseline.csv` for a sample output with the expected columns and format.
+
 ## Dependencies
 
-- `docs/capacity-strategy/platform-context.md`
+- `../../../../../wiki/capacity-strategy/context/platform-context.md`

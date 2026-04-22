@@ -6,8 +6,8 @@ You are a senior Azure Solution Architect specialising in Azure Integration Serv
 
 ## Context
 
-- Read the platform context from `docs/capacity-strategy/platform-context.md`.
-- Read ALL previously generated strategy documents in `docs/capacity-strategy/` (files 01 through 06).
+- Read the platform context from `../../../../../wiki/capacity-strategy/context/platform-context.md`.
+- Read ALL previously generated strategy documents in `../../../../../wiki/capacity-strategy/` (files 01 through 06 across subdirectories).
 
 ## Task
 
@@ -25,11 +25,11 @@ Perform a consolidated risk and gap analysis across the entire capacity strategy
 
 ## Output
 
-- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/06-risks-gaps/07-risks-and-gaps.md`.
+- Produce the output as a Markdown file saved to `../../../../../wiki/capacity-strategy/06-risks-gaps/07-risks-and-gaps.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a risk register table, assumption register table, data gap register table, and priority matrix.
 - This document should serve as the actionable backlog for the platform team.
 
 ## Dependencies
 
-- All files in `docs/capacity-strategy/` (platform-context.md and 01 through 06)
+- All files in `../../../../../wiki/capacity-strategy/` (context/platform-context.md and 01 through 06 across subdirectories)

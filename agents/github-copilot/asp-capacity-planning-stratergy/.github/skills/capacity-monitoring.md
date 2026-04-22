@@ -6,9 +6,9 @@ You are a senior Azure Solution Architect specialising in Azure Integration Serv
 
 ## Context
 
-- Read the platform context from `docs/capacity-strategy/platform-context.md`.
-- Read the sizing model from `docs/capacity-strategy/02-asp-sizing-and-scaling.md`.
-- Read the growth plan from `docs/capacity-strategy/03-asp-growth-plan.md`.
+- Read the platform context from `../../../../../wiki/capacity-strategy/context/platform-context.md`.
+- Read the sizing model from `../../../../../wiki/capacity-strategy/02-recommendations/02-asp-sizing-and-scaling.md`.
+- Read the growth plan from `../../../../../wiki/capacity-strategy/03-plans/03-asp-growth-plan.md`.
 
 ## Task
 
@@ -26,13 +26,13 @@ Define the monitoring and governance framework needed to proactively manage capa
 
 ## Output
 
-- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/05-governance/05-monitoring-and-governance.md`.
+- Produce the output as a Markdown file saved to `../../../../../wiki/capacity-strategy/05-governance/05-monitoring-and-governance.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a metrics reference table with columns: Metric, Layer, Source, Warning Threshold, Critical Threshold, Action.
 - Include example KQL queries where applicable.
 
 ## Dependencies
 
-- `docs/capacity-strategy/platform-context.md`
-- `docs/capacity-strategy/02-asp-sizing-and-scaling.md`
-- `docs/capacity-strategy/03-asp-growth-plan.md`
+- `../../../../../wiki/capacity-strategy/context/platform-context.md`
+- `../../../../../wiki/capacity-strategy/02-recommendations/02-asp-sizing-and-scaling.md`
+- `../../../../../wiki/capacity-strategy/03-plans/03-asp-growth-plan.md`

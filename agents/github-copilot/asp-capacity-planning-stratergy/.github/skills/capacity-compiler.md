@@ -6,7 +6,7 @@ You are a senior Azure Solution Architect specialising in Azure Integration Serv
 
 ## Context
 
-- Read ALL documents in `docs/capacity-strategy/` (platform-context.md and files 01 through 07).
+- Read ALL documents in `../../../../../wiki/capacity-strategy/` (context/platform-context.md and files 01 through 07 across subdirectories).
 
 ## Task
 
@@ -20,7 +20,7 @@ Compile all individual strategy documents into a single, cohesive capacity manag
 
 ## Output
 
-- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/07-compiled/capacity-management-strategy.md`.
+- Produce the output as a Markdown file saved to `../../../../../wiki/capacity-strategy/07-compiled/capacity-management-strategy.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - The document should be suitable for review by technical and non-technical stakeholders.
 - Include a table of contents at the top.
@@ -28,4 +28,4 @@ Compile all individual strategy documents into a single, cohesive capacity manag
 
 ## Dependencies
 
-- All files in `docs/capacity-strategy/` (platform-context.md and 01 through 07)
+- All files in `../../../../../wiki/capacity-strategy/` (context/platform-context.md and 01 through 07 across subdirectories)

@@ -6,9 +6,9 @@ You are a senior Azure Solution Architect specialising in Azure Integration Serv
 
 ## Context
 
-- Read the platform context from `docs/capacity-strategy/platform-context.md`.
-- Read the current state assessment from `docs/capacity-strategy/01-current-state-assessment.md`.
-- Read the sizing model from `docs/capacity-strategy/02-asp-sizing-and-scaling.md`.
+- Read the platform context from `../../../../../wiki/capacity-strategy/context/platform-context.md`.
+- Read the current state assessment from `../../../../../wiki/capacity-strategy/01-assessments/01-current-state-assessment.md`.
+- Read the sizing model from `../../../../../wiki/capacity-strategy/02-recommendations/02-asp-sizing-and-scaling.md`.
 
 ## Task
 
@@ -26,13 +26,13 @@ Define how interfaces should be distributed across ASPs and Logic App Standard r
 
 ## Output
 
-- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/04-distribution/04-workload-distribution.md`.
+- Produce the output as a Markdown file saved to `../../../../../wiki/capacity-strategy/04-distribution/04-workload-distribution.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a distribution model diagram or table.
 - Include a worked example showing how a batch of new interfaces would be assigned.
 
 ## Dependencies
 
-- `docs/capacity-strategy/platform-context.md`
-- `docs/capacity-strategy/01-current-state-assessment.md`
-- `docs/capacity-strategy/02-asp-sizing-and-scaling.md`
+- `../../../../../wiki/capacity-strategy/context/platform-context.md`
+- `../../../../../wiki/capacity-strategy/01-assessments/01-current-state-assessment.md`
+- `../../../../../wiki/capacity-strategy/02-recommendations/02-asp-sizing-and-scaling.md`

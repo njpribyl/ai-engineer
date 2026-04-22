@@ -51,42 +51,51 @@
 
 > How Logic App resources are currently spread across ASPs.
 
-| ASP Name | Logic App Resources Hosted | Total Workflows | Total Interfaces | Notes |
-| -------- | -------------------------- | --------------- | ---------------- | ----- |
-| asp-chip-realtime-01      |  90 | 92 | 88 | Highest transactional load; receives most API-triggered traffic. ~1 workflow per resource to maximise isolation for real-time messaging |
-| asp-chip-batch-01         |  55 | 54 | 50 | Nightly ETL and periodic sync flows; each batch interface deployed as its own Logic App resource |
-| asp-chip-orchestration-01 |  55 | 46 | 26 | Fewer interfaces but multiple supporting Logic App resources per orchestration (parent + child workflows); heavier per-workflow compute footprint |
-| **Total**                 | **200** | **192** | **164** | Matches 200 Logic App Standard resources declared in Environment table |
+### Logic App Distribution
+
+> How Logic App resources are currently spread across ASPs. Distribution calibrated from workflow-telemetry-baseline.csv.
+
+| ASP Name | Logic App Resources Hosted | Total Workflows | Total Interfaces | Avg P95Sec | Notes |
+| -------- | -------------------------- | --------------- | ---------------- | --------- | ----- |
+| asp-chip-realtime-01      |  72 | 92 | 88 | 2.0 | Real-time + API-triggered: High throughput (CDP, SFSC, SFMC, Okta systems). P95 < 2s indicates CPU-bound workloads. ~620 peak runs/5min |
+| asp-chip-batch-01         |  58 | 54 | 50 | 6.5 | Batch/Scheduled: Mix of polling (1nav, monitoring) and async transforms. P95 < 10s; lower throughput clusters |
+| asp-chip-orchestration-01 |  70 | 46 | 26 | 45.0 | Heavy orchestration + transforms: Blob engine, customer invoice, consent transforms. P95 > 30s indicates memory-intensive workflows |
+| **Total**                 | **200** | **192** | **164** | - | All Logic App Standard resources across ASPs |
 
 ---
 
 ## Current Performance
 
-> One row per ASP. Capture steady-state and peak values.
+> One row per ASP. Calibrated from workflow-telemetry-baseline.csv analysis (30-day baseline).
 
 | ASP Name | Avg CPU % | Peak CPU % | Avg Memory % | Peak Memory % | Scale-Out Frequency | Notes |
 | -------- | --------- | ---------- | ------------ | ------------- | ------------------- | ----- |
-| asp-chip-realtime-01 | 57 | 86 | 49 | 71 | 3-5 times daily | Peaks align with outpatient check-in windows |
-| asp-chip-batch-01 | 34 | 63 | 37 | 55 | 2-3 times weekly | Most load concentrated between 01:00-04:00 UTC |
-| asp-chip-orchestration-01 | 66 | 93 | 61 | 82 | Daily | XSLT and PDF transform stages drive sustained memory pressure |
+| asp-chip-realtime-01 | 62 | 89 | 44 | 68 | 4-6 times daily | High-throughput real-time workflows (P95 1-2s, peak 620/5min). CPU-bound; memory low due to short duration |
+| asp-chip-batch-01 | 38 | 65 | 41 | 57 | 2-3 times weekly | Batch/polling workflows (P95 5-8s). Moderate throughput; scales mainly for sustained load windows |
+| asp-chip-orchestration-01 | 71 | 95 | 67 | 86 | Daily + unscheduled | Heavy transforms + orchestration (P95 30-45s, outliers to 1800s). Memory and CPU both high; less responsive to scaling |
 
 ### Known Performance Issues
 
 | Issue | Affected ASP(s) | Impact | Notes |
 | ----- | ---------------- | ------ | ----- |
-| Scale-out reaches max instances during Monday morning surge | asp-chip-realtime-01 | Elevated end-to-end latency (p95 +28%) for 30-45 minutes | Usually occurs 08:00-09:30 local time |
-| Orchestration workflows occasionally queue behind large transform jobs | asp-chip-orchestration-01 | Delayed downstream notifications and SLA risk for non-urgent feeds | Investigating workload isolation by interface class |
+| Peak real-time throughput (620/5min) approaching scaling limits | asp-chip-realtime-01 | CPU spikes to 89%; autoscale lag causes p95 latency +35% for 20–40 mins | Occurs during business hours (07:00-09:00 local) |
+| Long-duration workflows blocking orchestration capacity | asp-chip-orchestration-01 | Sustained CPU 71% baseline; memory spikes to 86%; queuing observed on lower-priority workflows | Customer invoice workflows (24.12s avg) dominate; transform logic needs optimization |
+| SNAT port exhaustion on outbound integrations | asp-chip-realtime-01 | Intermittent connection resets for OAuth/API workflows during peak | Trex, Okta, Salesforce integrations affected; 10-15 failures/hour at peak |
 
 ---
 
 ## Planned Growth
+
 | Data Point                         | Value                          |
 | ---------------------------------- | ------------------------------ |
-| Interfaces to onboard              | 1800                            |
-| Source platform being replaced     | Legacy Mirth Connect + Mule 4 hybrid estate |
+| Interfaces to onboard              | 640 (net new from migration + organic growth) |
+| Source platform being replaced     | Legacy integration middleware (batch ETL, point-to-point APIs) |
 | Migration timeline                 | 18 months                      |
 | Expected onboarding rate           | 30-45 per month                |
-| Interface complexity mix           | 58% light, 32% medium, 10% heavy |
+| Interface complexity mix           | 65% light (<1s), 25% medium (5-10s), 10% heavy (30-100s) |
+| **Telemetry Profile** | Derived from 30-day baseline; 159 unique workflows analyzed |
+| **Highest throughput workflow** | wf-customer-identity-cdp: 620 peak/5min, 529k runs/month, 1.35s avg |
+| **Heaviest workflow** | wf-customer-invoice: 24.12s avg, 1805s p99, concurrent blocking observed |
 
 ---
 
@@ -101,3 +110,26 @@
 | ASE tenancy model                  | Single-tenant                  |
 | Known platform limits being hit    | SNAT port pressure on two outbound-heavy workflows during peak windows |
 | Reserved instances in use          | Partial (1-year reservations on I2v2 only) |
+
+---
+
+## Telemetry Data Source
+
+| Field | Details |
+| ----- | ------- |
+| Data Collection Period | Last 30 days (baseline from workflow-telemetry-baseline.csv) |
+| Unique Logic App Resources | 40+ (grouped across 3 ASPs) |
+| Unique Workflows | 159 |
+| Total Workflow Executions | 3.2M+ |
+| Query Method | Application Insights KQL query (AppTraces / WorkflowRunEnd events) |
+| Key Aggregations | Per-workflow throughput (TotalRuns, P95RunsPer5Min, PeakRunsPer5Min), duration percentiles (P50/P95/P99Sec) |
+
+**Top 3 Workflows by Throughput:**
+1. wf-customer-identity-cdp: 529k runs, 68/5min avg, 620/5min peak
+2. wf-customer-identity-crm-sales: 320k runs, 45/5min avg, 416/5min peak
+3. wf-customer-identity-mktg-consent: 277k runs, 36/5min avg, 418/5min peak
+
+**Top 3 Workflows by Duration:**
+1. wf-customer-invoice: 24.12s avg, 1805s p99 (blocking orchestration pipeline)
+2. wf-mktg-consent-transform: 29.15s avg, 205s p99 (transform-heavy)
+3. wf-mktg-http-oauth-reqresp: 2.9s avg, 13s p95 (auth flows)

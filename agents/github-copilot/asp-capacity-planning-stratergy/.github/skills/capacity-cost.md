@@ -6,9 +6,9 @@ You are a senior Azure Solution Architect specialising in Azure Integration Serv
 
 ## Context
 
-- Read the platform context from `docs/capacity-strategy/platform-context.md`.
-- Read the sizing model from `docs/capacity-strategy/02-asp-sizing-and-scaling.md`.
-- Read the growth plan from `docs/capacity-strategy/03-asp-growth-plan.md`.
+- Read the platform context from `../../../../../wiki/capacity-strategy/context/platform-context.md`.
+- Read the sizing model from `../../../../../wiki/capacity-strategy/02-recommendations/02-asp-sizing-and-scaling.md`.
+- Read the growth plan from `../../../../../wiki/capacity-strategy/03-plans/03-asp-growth-plan.md`.
 
 ## Task
 
@@ -23,13 +23,13 @@ Provide cost optimisation recommendations that balance capacity headroom against
 
 ## Output
 
-- Produce the output as a Markdown file saved to `../../wiki/capacity-strategy/02-recommendations/06-cost-optimisation.md`.
+- Produce the output as a Markdown file saved to `../../../../../wiki/capacity-strategy/02-recommendations/06-cost-optimisation.md`.
 - Include a document header with: Title, Date, Status (Draft), Dependencies.
 - Include a cost projection table with columns: Phase, ASP Count, SKU, Instances, Estimated Monthly Cost.
 - Where exact pricing is unavailable, provide the formula and link to the Azure pricing calculator.
 
 ## Dependencies
 
-- `docs/capacity-strategy/platform-context.md`
-- `docs/capacity-strategy/02-asp-sizing-and-scaling.md`
-- `docs/capacity-strategy/03-asp-growth-plan.md`
+- `../../../../../wiki/capacity-strategy/context/platform-context.md`
+- `../../../../../wiki/capacity-strategy/02-recommendations/02-asp-sizing-and-scaling.md`
+- `../../../../../wiki/capacity-strategy/03-plans/03-asp-growth-plan.md`
